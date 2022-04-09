@@ -1,0 +1,101 @@
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <fstream>
+using namespace std;
+
+//Create a Student struct
+//A struct is a programmer defined data type
+//(You can use a struct to bundle together multiple pieces of data)
+struct Account
+{
+	string name;
+	double account_balance;
+	Account(string n = "", double x = 0) {
+		name = n;
+		account_balance = x;
+	}
+};
+
+
+
+int main()
+{
+
+	ifstream infile;
+	infile.open("Accounts.txt");
+	string name;
+	double amt;
+	char trans;
+	double money;
+	double calc;
+	int index; // for the array
+
+	//Creating Struct with array
+	Account arr[5];
+	cout << fixed << setprecision(2);
+	for (int i = 0; i < 5; i++) {
+		infile >> name >> amt;
+		arr[i].name = name;
+		arr[i].account_balance = amt;
+
+		cout << "Name: " << arr[i].name << "\tAccount Balance: $" << right << setw(9) << arr[i].account_balance << endl;
+	}
+
+	//read in the values
+	while (!infile.eof()) // why do I not put 
+		infile >> name >> trans >> money; // reading in the infile, what to do 
+
+		if (name == "Michelle")
+		{
+			index = 0;
+			calc(index, trans, money, arr);
+		}
+		if (name == "Melanie")
+		{
+			index = 1;
+			calc(index, trans, money, arr);
+		}
+		if (name == "Marlon")
+		{
+			index = 2;
+			calc(index, trans, money, arr);
+		}
+		if (name == "Mika")
+		{
+			index = 3;
+			calc(index, trans, money, arr);
+		}
+		if (name == "Marlee")
+		{
+			index = 4;
+			calc(index, trans, money, arr);
+		}
+
+		infile.close();
+
+		for (int i = 0; i < 5; i++)
+		{
+			cout << arr[i] << '\n';
+		}
+
+		return 0; //closingn output as well?
+
+	}
+
+void calc(int index, char trans, double money, double arr[])
+{
+	double amt = 0.0; // using 0.0 so we can have the cents as well
+		switch (trans)
+		{
+		case 'A': arr[index] += money; break;
+		case 'B': arr[index] += money; break;
+		case 'M': arr[index] += money; break;
+		case 'C': arr[index] -= money; break;
+		case 'D': arr[index] -= money; break;
+		case 'O': arr[index] -= money; break;
+		case 'T': arr[index] -= money; break;
+		}
+}
+
