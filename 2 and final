@@ -1,0 +1,119 @@
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <fstream>
+using namespace std;
+
+//Create a Student struct
+//A struct is a programmer defined data type
+//(You can use a struct to bundle together multiple pieces of data)
+struct Account
+{
+	string name;
+	double account_balance;
+	Account(string n = "", double x = 0)
+	{
+		name = n;
+		account_balance = x;
+	}
+};
+
+//do i need this on before the main
+void calc(int index, char trans, double money, Account arr[]);
+void overdraft(int index, Account arr[]);
+
+
+int main()
+{
+
+	ifstream infile;
+	infile.open("Accounts.txt");
+	string name;
+	double amt;
+	char trans;
+	double money;
+	int index; // for the array
+
+	//Creating Struct with array
+	Account arr[5];
+	cout << fixed << setprecision(2);
+	for (int i = 0; i < 5; i++) {
+		infile >> name >> amt;
+		arr[i].name = name;
+		arr[i].account_balance = amt;
+
+		//cout << "Name: " << arr[i].name << "\tAccount Balance: $" << right << setw(9) << arr[i].account_balance << endl;
+	}
+
+	//read in the values
+	while (!infile.eof()) // why do I not put 
+	{
+		infile >> name >> trans >> money; // reading in the infile, what to do 
+
+	/*	i could use this form but then I need to pay attention to the order of my names together with my index  bc the name is reffered to the particular index
+	
+	if (name == "Michelle")
+		{
+			index = 0;
+			calc(index, trans, money, arr);
+		}
+		if (name == "Melanie")
+		{
+			index = 1;
+			calc(index, trans, money, arr);
+		}
+		if (name == "Marlon")
+		{
+			index = 2;
+			calc(index, trans, money, arr);
+		}
+		if (name == "Mika")
+		{
+			index = 3;
+			calc(index, trans, money, arr);
+		}
+		if (name == "Marlee")
+		{
+			index = 4;
+			calc(index, trans, money, arr);
+		} */
+
+		for (int i = 0; i < 5; i++) //for loop for finding the matching names and doing the calculation of what they do to their  account.
+		{
+			if (name == arr[i].name)
+				calc(i, trans, money, arr);
+		}
+	}
+
+		infile.close();
+
+		for (int i = 0; i < 5; i++)
+		{
+			cout << "Name: " << arr[i].name << "\tAccount Balance: $" << right << setw(9) << arr[i].account_balance << endl;
+		}
+
+		return 0; //closingn output as well?
+
+	}
+
+void calc(int index, char trans, double money, Account arr[])
+{
+	double amt = 0.0; // using 0.0 so we can have the cents as well
+		switch (trans)
+		{
+		case 'A': arr[index].account_balance += money; overdraft(index, arr); break;
+		case 'B': arr[index].account_balance += money; overdraft(index, arr); break;
+		case 'M': arr[index].account_balance += money; overdraft(index, arr); break;
+		case 'C': arr[index].account_balance -= money; overdraft(index, arr); break;
+		case 'D': arr[index].account_balance -= money; overdraft(index, arr); break;
+		case 'O': arr[index].account_balance -= money; overdraft(index, arr); break;
+		case 'T': arr[index].account_balance -= money; overdraft(index, arr); break;
+		}
+}
+
+void overdraft(int index, Account arr[]) // to add (minus) the money on when your in a minus  because your are in a minus
+{
+	if (arr[index].account_balance < 0)
+		arr[index].account_balance -= 30;
+}
